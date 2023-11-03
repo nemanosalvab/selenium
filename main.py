@@ -31,29 +31,39 @@ def table_rec():
     return elements
 
 
+
+
 try:
 
-        elements = WebDriverWait(browser, 5).until(
-            EC.presence_of_all_elements_located((By.XPATH,'//select[@id="ctl00_ctl00_cph_contents_cph_contents_List_CriterioBusquedaDepartamento"]')))
-        departamentos = Select(elements[0])
+        departamentos = Select(WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH,'//select[@id="ctl00_ctl00_cph_contents_cph_contents_List_CriterioBusquedaDepartamento"]'))))
 
         for i, depto in enumerate(departamentos.options):
-            departamentos.select_by_index(i)
 
-            elements = WebDriverWait(browser, 5).until(
-                EC.presence_of_all_elements_located((By.XPATH,'//select[@id="ctl00_ctl00_cph_contents_cph_contents_List_CriterioBusqueda"]')))
-            
-            municipios = Select(elements[0])
+            if i == 0:
+                departamentos.select_by_index(i)
+            else:
+                
+                departamentos = Select(WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH,'//select[@id="ctl00_ctl00_cph_contents_cph_contents_List_CriterioBusquedaDepartamento"]'))))
+                departamentos.select_by_index(i)
+
+            municipios = Select(WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH,'//select[@id="ctl00_ctl00_cph_contents_cph_contents_List_CriterioBusqueda"]'))))
             
             for j, mun in enumerate(municipios.options):
-                municipios.select_by_index(j)
 
-                elements = WebDriverWait(browser, 5).until(
-                    EC.presence_of_all_elements_located((By.XPATH,'//select[@id="ctl00_ctl00_cph_contents_cph_contents_Drp_PresupuestoVigencia"]')))
-
-                vigencias = Select(elements[0])
-                for k , anno in enumerate(vigencias.options):
-                    vigencias.select_by_index(k)
+                if j == 0:
+                    municipios.select_by_index(j)
+                else:
+                    municipios = Select(WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH,'//select[@id="ctl00_ctl00_cph_contents_cph_contents_List_CriterioBusqueda"]'))))
+                    municipios.select_by_index(j)
+                
+                vigencia = Select(WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH,'//select[@id="ctl00_ctl00_cph_contents_cph_contents_Drp_PresupuestoVigencia"]'))))
+                
+                for k, vig in enumerate(vigencia.options):
+                    if k == 0:
+                        vigencia.select_by_index(k)
+                    else:
+                        vigencia = Select(WebDriverWait(browser, 5).until(EC.presence_of_element_located((By.XPATH,'//select[@id="ctl00_ctl00_cph_contents_cph_contents_Drp_PresupuestoVigencia"]'))))
+                        vigencia.select_by_index(k)
 
                     try:
                         WebDriverWait(browser, 5).until(
@@ -69,8 +79,4 @@ try:
 except Exception:
     print("!Table not loaded¡")
 
-for key , element in enumerate(select.options):
-    print(key , element)
-
-#depto = select.select_by_visible_text(select.options[0].accessible_name)
 
